@@ -59,7 +59,7 @@ class WalletDaoTestShould {
 
     }
     @Test
-    @Order(5)
+    @Order(6)
     public void throwsWalletDaoException_When_invalidIdGivenForRetrieving(){
 
         WalletDaoException thrown = assertThrows(WalletDaoException.class
@@ -69,7 +69,7 @@ class WalletDaoTestShould {
 
     }
     @Test
-    @Order(5)
+    @Order(7)
     public void throwsWalletDaoException_When_invalidIdGivenForUpdating(){
 
         WalletDaoException thrown = assertThrows(WalletDaoException.class
