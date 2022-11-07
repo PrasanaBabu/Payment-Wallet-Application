@@ -40,7 +40,7 @@ public class Controller {
                             String userEnteredPassword = getPasswordThroughConsole();
                             boolean userAuthenticated = walletService.login(walletId, userEnteredPassword);
                             if (userAuthenticated){
-                                addFundWithUserGivenId(walletService, walletId);
+                                addFundToUserGivenId(walletService, walletId);
                             }
                             else
                                 System.out.println("Password Incorrect");
@@ -48,8 +48,10 @@ public class Controller {
                     } catch (WalletException e) {
                         if (e.getMessage().contains("At get"))
                             System.out.println("No such id present in database");
-                        else if (e.getMessage().contains("Amount to add must be greater than 1"))
-                            System.out.println("Amount to add must be greater than 1");
+                        else if (e.getMessage().contains("Amount to add must be greater than or equal to 1"))
+                            System.out.println("Amount to add must be greater than or equal to 1");
+                        else
+                            e.printStackTrace();
                         }
                     break;
 
@@ -67,6 +69,8 @@ public class Controller {
                     } catch (WalletException e) {
                         if(e.getMessage().contains("At get"))
                             System.out.println("No such id present in database");
+                        else
+                            e.printStackTrace();
                     }
                     break;
 
@@ -84,6 +88,8 @@ public class Controller {
                     } catch (WalletException e) {
                         if (e.getMessage().contains("At get"))
                             System.out.println("No such id is present in database");
+                        else
+                            e.printStackTrace();
                         }
                     break;
 
@@ -103,6 +109,8 @@ public class Controller {
                             System.out.println("No such id present in database");
                         else if (e.getMessage().contains("Insuf"))
                             System.out.println("Insufficient Balance");
+                        else
+                            e.printStackTrace();
                     }
                     break;
 
@@ -127,11 +135,15 @@ public class Controller {
                             System.out.println("Receiver Id Invalid");
                         else if(e.getMessage().contains("Sender wallet Insufficient Balance"))
                             System.out.println("Sender wallet Insufficient Balance");
+                        else if(e.getMessage().contains("Amount Low For Transfer"))
+                            System.out.println("Enter amount greater than minimum amount to transfer");
+                        else
+                            e.printStackTrace();
                     }
                     break;
 
                 default:
-                    System.out.println("Please enter any one of the following numbers only (1,2,3,4)");
+                    System.out.println("Please enter any one of the following numbers only (1,2,3,4,5,6)");
             }
             System.out.println("Do you wish to continue(Y/N)");
             choiceToContinue = scanner.next().charAt(0);
@@ -170,6 +182,7 @@ public class Controller {
         System.out.println("3.Check current wallet balance ");
         System.out.println("4.Delete wallet details ");
         System.out.println("5.Withdraw funds from wallet ");
+        System.out.println("6.Transfer funds from wallet to another person");
         System.out.println("Enter the corresponding number : ");
         int option = scanner.nextInt();
         scanner.nextLine();
@@ -203,7 +216,7 @@ public class Controller {
         return walletId;
     }
 
-    private static void addFundWithUserGivenId(WalletService walletService, int walletId) {
+    private static void addFundToUserGivenId(WalletService walletService, int walletId) {
         try {
             double amountToCredit = getAmountToCreditThroughConsole();
             Double amountAdded = walletService.addFundsToWallet(walletId, amountToCredit);

@@ -2,7 +2,6 @@ package app.dao;
 
 import app.dto.Wallet;
 import app.exception.WalletDaoException;
-import app.exception.WalletException;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -16,14 +15,13 @@ public class WalletDaoImpl implements WalletDao {
     private final String jdbcUsername = "root";
     private final String jdbcPassword = "root";
     private final String jdbcDriver = "com.mysql.cj.jdbc.Driver";
-
     private final String INSERT_NEW_WALLET_SQL = "insert into wallets (id, name, balance, password) values (?,?,?,?)";
     private final String GET_WALLET_SQL = "select * from " + "wallets" + " where id =?";
     private final String UPDATE_WALLET_SQL = "update " + "wallets" + " set name=?, balance=?, password=? where id=?";
     private final String DELETE_WALLET_SQL = "delete from " + "wallets" + " where id=?";
+
     public WalletDaoImpl() {
     }
-
     private Connection getConnection(){
 
         Connection connection = null;
@@ -54,7 +52,6 @@ public class WalletDaoImpl implements WalletDao {
         }
         return newWallet;
     }
-
     @Override
     public Wallet getWalletById(Integer walletId) throws WalletDaoException {
         try {
@@ -69,14 +66,13 @@ public class WalletDaoImpl implements WalletDao {
             String password = resultSet.getString("password");
 
             Wallet wallet = new Wallet(walletId, name, balance, password);
-//            connection.close();
+            connection.close();
             return wallet;
 
         } catch (SQLException e) {
             throw new WalletDaoException("At get, Invalid ID "+ e.getMessage());
         }
     }
-
     @Override
     public Wallet updateWallet(Wallet updateWallet) throws WalletDaoException {
         Connection connection = this.getConnection();
@@ -97,7 +93,6 @@ public class WalletDaoImpl implements WalletDao {
         }
         return updateWallet;
     }
-
     @Override
     public Wallet deleteWalletById(Integer walletId) throws WalletDaoException {
         try {

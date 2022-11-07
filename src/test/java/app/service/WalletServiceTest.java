@@ -12,15 +12,14 @@ import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class WalletServiceTestShould {
     public static final double INVALID_AMOUNT_TO_ADD = 0.0;
+    public static final double INVALID_AMOUNT_FOR_TRANSFER = 0.0;
     private final Integer  VALID_ID = 1;
     private final Integer RECEIVER_VALID_ID = 2;
     private final Integer INVALID_ID = 1111;
-    private static Double expectedBalanceOfGivenId = 100.0;
+    private static Double expectedBalanceOfGivenId = 10.0;
     private final Double VALID_TRANSFER_AMOUNT = 10.0;
     private final Double INVALID_WITHDRAW_AMOUNT = 100000.0;
-
-
-    WalletService walletService = new WalletServiceImpl();
+    private WalletService walletService = new WalletServiceImpl();
 
     @Test
     @Order(1)
@@ -29,7 +28,7 @@ class WalletServiceTestShould {
 
         Wallet testWallet = new Wallet(3, "GPay", 0.0, "root");
         Wallet addedWallet = walletService.registerWallet(testWallet);
-        assertEquals(addedWallet, testWallet);
+        assertEquals(addedWallet.getId(), testWallet.getId());
     }
     @Test
     @Order(2)
@@ -52,7 +51,7 @@ class WalletServiceTestShould {
         assertTrue(walletService.fundTransfer(RECEIVER_VALID_ID, VALID_ID, VALID_TRANSFER_AMOUNT));
     }
     @Test
-    @Order(19)
+    @Order(20)
     void returnDeletedWallet_When_UnRegisterWalletSuccessful() throws WalletException{
 
         Integer validIdToDelete = 3;
@@ -144,14 +143,14 @@ class WalletServiceTestShould {
         assertTrue(thrown.getMessage().contains("Sender wallet Insufficient Balance"));
     }
     @Test
-    @Order(20)
-    void throwWalletException_When_AddAmountLessThan(){
+    @Order(21)
+    void throwWalletException_When_InvalidAmountToAdd(){
 
         Executable executable = () -> walletService.addFundsToWallet(VALID_ID, INVALID_AMOUNT_TO_ADD);
 
         // then
         WalletException thrown = assertThrows(WalletException.class, executable);
-        assertTrue(thrown.getMessage().contains("Amount to add must be greater than 1"));
+        assertTrue(thrown.getMessage().contains("Amount to add must be greater"));
     }
     @Test
     @Order(13)
@@ -192,6 +191,18 @@ class WalletServiceTestShould {
     }
     @Test
     @Order(16)
+    void throwWalletException_When_InvalidAmountForTransferFunds() {
+        // given
+
+        // when
+        Executable executable = () -> walletService.fundTransfer(VALID_ID,RECEIVER_VALID_ID, INVALID_AMOUNT_FOR_TRANSFER);
+
+        // then
+        WalletException thrown = assertThrows(WalletException.class, executable);
+        assertTrue(thrown.getMessage().contains("Amount Low For Transfer"));
+    }
+    @Test
+    @Order(17)
     void throwWalletException_When_InvalidIdForLogin() {
         // given
         // when
@@ -202,7 +213,7 @@ class WalletServiceTestShould {
         assertTrue(thrown.getMessage().contains("Invalid ID"));
     }
     @Test
-    @Order(17)
+    @Order(18)
     void returnFalse_When_WrongPasswordEntered() throws WalletException {
         // given
         String wrongPassword = "1";
@@ -214,11 +225,10 @@ class WalletServiceTestShould {
         assertFalse(authenticated);
     }
     @Test
-    @Order(18)
+    @Order(19)
     public void returnTrue_When_LoginSuccessful() throws WalletException {
 
         String givenPassword = "root";
         assertTrue(walletService.login(VALID_ID, givenPassword));
     }
-
 }

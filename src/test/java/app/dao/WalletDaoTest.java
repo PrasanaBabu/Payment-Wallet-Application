@@ -7,14 +7,16 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class WalletDaoTestShould {
 
     public static final int VALID_ID = 3;
     public static final int INVALID_ID = 100;
-    private Wallet testNewWallet = new Wallet(VALID_ID, "GPay", 0.0, "root");
+    private Wallet testNewWallet = new Wallet(VALID_ID, "Arun", 0.0, "root");
     private WalletDao testWalletDao = new WalletDaoImpl();
     @Test
     @Order(1)
@@ -49,7 +51,7 @@ class WalletDaoTestShould {
     }
     @Test
     @Order(5)
-    public void throwsWalletDaoException_When_redundantIdGivenForAdding(){
+    public void throwWalletDaoException_When_redundantIdGivenForAdding(){
 
         int redundantId = 1;
         WalletDaoException thrown = assertThrows(WalletDaoException.class
@@ -60,7 +62,7 @@ class WalletDaoTestShould {
     }
     @Test
     @Order(6)
-    public void throwsWalletDaoException_When_invalidIdGivenForRetrieving(){
+    public void throwWalletDaoException_When_invalidIdGivenForRetrieving(){
 
         WalletDaoException thrown = assertThrows(WalletDaoException.class
                 , () -> testWalletDao.getWalletById(INVALID_ID));
@@ -70,7 +72,7 @@ class WalletDaoTestShould {
     }
     @Test
     @Order(7)
-    public void throwsWalletDaoException_When_invalidIdGivenForUpdating(){
+    public void throwWalletDaoException_When_invalidIdGivenForUpdating(){
 
         WalletDaoException thrown = assertThrows(WalletDaoException.class
                 , () -> testWalletDao.updateWallet(new Wallet(INVALID_ID, "Gpay", 0.0, "root")));

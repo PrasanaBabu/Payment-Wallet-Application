@@ -7,6 +7,8 @@ import app.exception.WalletDaoException;
 import app.exception.WalletException;
 
 public class WalletServiceImpl implements WalletService {
+    public static final int MINIMUM_AMOUNT_FOR_TRANSFER = 1;
+    public static final double MINIMUM_AMOUNT_TO_ADD = 1.0;
     private WalletDao walletDao = new WalletDaoImpl();
     @Override
     public Wallet registerWallet(Wallet newWallet) throws WalletException {
@@ -16,7 +18,6 @@ public class WalletServiceImpl implements WalletService {
             throw new WalletException(e.getMessage());
         }
     }
-
     @Override
     public boolean login(Integer walletId, String enteredPassword) throws WalletException{
         try {
@@ -30,12 +31,11 @@ public class WalletServiceImpl implements WalletService {
 
         return false;
     }
-
     @Override
     public Double addFundsToWallet(Integer walletId, Double amountToAdd) throws WalletException{
         try {
-            if(amountToAdd < 1.0)
-                throw new WalletException("Amount to add must be greater than 1");
+            if(amountToAdd < MINIMUM_AMOUNT_TO_ADD)
+                throw new WalletException("Amount to add must be greater than or equal to 1");
             Wallet wallet;
             wallet = walletDao.getWalletById(walletId);
 
@@ -61,6 +61,8 @@ public class WalletServiceImpl implements WalletService {
     @Override
     public boolean fundTransfer(Integer fromId, Integer toId, Double amount) throws WalletException {
         Wallet senderWallet;
+        if(amount < MINIMUM_AMOUNT_FOR_TRANSFER)
+            throw new WalletException("Amount Low For Transfer");
         try {
             senderWallet = walletDao.getWalletById(fromId);
         } catch (Exception e){
@@ -105,7 +107,6 @@ public class WalletServiceImpl implements WalletService {
 
         return walletDeleted;
     }
-
     @Override
     public Boolean withdrawFundsFromWallet(Integer walletId, Double amountToWithdraw) throws WalletException {
         Wallet wallet;
