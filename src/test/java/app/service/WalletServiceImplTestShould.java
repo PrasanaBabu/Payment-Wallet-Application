@@ -11,8 +11,8 @@ import org.junit.jupiter.api.function.Executable;
 import static org.junit.jupiter.api.Assertions.*;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 class WalletServiceTestShould {
+    public static final double INVALID_AMOUNT_TO_ADD = 0.0;
     private final Integer  VALID_ID = 1;
-
     private final Integer RECEIVER_VALID_ID = 2;
     private final Integer INVALID_ID = 1111;
     private static Double expectedBalanceOfGivenId = 100.0;
@@ -144,6 +144,16 @@ class WalletServiceTestShould {
         assertTrue(thrown.getMessage().contains("Sender wallet Insufficient Balance"));
     }
     @Test
+    @Order(20)
+    void throwWalletException_When_AddAmountLessThan(){
+
+        Executable executable = () -> walletService.addFundsToWallet(VALID_ID, INVALID_AMOUNT_TO_ADD);
+
+        // then
+        WalletException thrown = assertThrows(WalletException.class, executable);
+        assertTrue(thrown.getMessage().contains("Amount to add must be greater than 1"));
+    }
+    @Test
     @Order(13)
     void throwWalletException_When_InvalidIdForDelete() {
         // given
@@ -210,6 +220,5 @@ class WalletServiceTestShould {
         String givenPassword = "root";
         assertTrue(walletService.login(VALID_ID, givenPassword));
     }
-
 
 }

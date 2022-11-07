@@ -183,7 +183,7 @@ public class Controller {
         return amountToCredit;
     }
 
-    private static String getNameThroughConsole() {
+    public static String getNameThroughConsole() {
         System.out.println("Enter name : ");
         String name = scanner.nextLine();
         return name;
@@ -195,7 +195,7 @@ public class Controller {
         return userEnteredPassword;
     }
 
-    private static int getWalletIdThroughConsole() {
+    public static int getWalletIdThroughConsole() {
         int walletId;
         System.out.println("Enter your wallet Id : ");
         walletId = scanner.nextInt();

@@ -14,7 +14,6 @@ public class Wallet {
     }
 
     public Wallet() {
-
     }
 
     @Override

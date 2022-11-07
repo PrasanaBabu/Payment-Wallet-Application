@@ -69,7 +69,7 @@ public class WalletDaoImpl implements WalletDao {
             String password = resultSet.getString("password");
 
             Wallet wallet = new Wallet(walletId, name, balance, password);
-            connection.close();
+//            connection.close();
             return wallet;
 
         } catch (SQLException e) {
