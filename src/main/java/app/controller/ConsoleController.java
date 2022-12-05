@@ -7,7 +7,7 @@ import app.service.WalletServiceImpl;
 
 import java.util.Scanner;
 
-public class Controller {
+public class ConsoleController {
     static Scanner scanner = new Scanner(System.in);
     static Integer lastId = 2;
     public static void main(String[] args) {

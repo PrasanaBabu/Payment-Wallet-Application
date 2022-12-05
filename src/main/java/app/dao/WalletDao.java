@@ -2,7 +2,6 @@ package app.dao;
 
 import app.dto.Wallet;
 import app.exception.WalletDaoException;
-import app.exception.WalletException;
 
 public interface WalletDao {
 
