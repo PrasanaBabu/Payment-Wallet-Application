@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class WalletTestShould {
-    private Wallet testWallet = new Wallet();
+    private final Wallet testWallet = new Wallet();
 
     @Test
     void returnCorrectWalletDetailsPassedThroughConstructor(){

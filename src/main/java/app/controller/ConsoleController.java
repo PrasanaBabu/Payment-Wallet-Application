@@ -8,7 +8,7 @@ import app.service.WalletServiceImpl;
 import java.util.Scanner;
 
 public class ConsoleController {
-    static Scanner scanner = new Scanner(System.in);
+    static final Scanner scanner = new Scanner(System.in);
     static Integer lastId = 2;
     public static void main(String[] args) {
         WalletService walletService = new WalletServiceImpl();
@@ -198,14 +198,12 @@ public class ConsoleController {
 
     public static String getNameThroughConsole() {
         System.out.println("Enter name : ");
-        String name = scanner.nextLine();
-        return name;
+        return scanner.nextLine();
     }
 
     private static String getPasswordThroughConsole() {
         System.out.println("Enter your password");
-        String userEnteredPassword = scanner.nextLine();
-        return userEnteredPassword;
+        return scanner.nextLine();
     }
 
     public static int getWalletIdThroughConsole() {

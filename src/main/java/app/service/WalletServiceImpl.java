@@ -9,7 +9,7 @@ import app.exception.WalletException;
 public class WalletServiceImpl implements WalletService {
     public static final int MINIMUM_AMOUNT_FOR_TRANSFER = 1;
     public static final double MINIMUM_AMOUNT_TO_ADD = 1.0;
-    private WalletDao walletDao = new WalletDaoImpl();
+    private final WalletDao walletDao = new WalletDaoImpl();
     @Override
     public Wallet registerWallet(Wallet newWallet) throws WalletException {
         try {
@@ -32,21 +32,22 @@ public class WalletServiceImpl implements WalletService {
         return false;
     }
     @Override
-    public Double addFundsToWallet(Integer walletId, Double amountToAdd) throws WalletException{
+    public Double addFundsToWallet(Integer walletId, Double amountToAdd) throws WalletException {
+        Double newBalance;
         try {
-            if(amountToAdd < MINIMUM_AMOUNT_TO_ADD)
+            if (amountToAdd < MINIMUM_AMOUNT_TO_ADD)
                 throw new WalletException("Amount to add must be greater than or equal to 1");
             Wallet wallet;
             wallet = walletDao.getWalletById(walletId);
 
-            Double newBalance = wallet.getBalance() + amountToAdd;
+            newBalance = wallet.getBalance() + amountToAdd;
             wallet.setBalance(newBalance);
             walletDao.updateWallet(wallet);
-        } catch (WalletDaoException e){
+        } catch (WalletDaoException e) {
             throw new WalletException(e.getMessage());
         }
 
-        return amountToAdd;
+        return newBalance;
     }
     @Override
     public Double showWalletBalance(Integer walletId) throws WalletException {

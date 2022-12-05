@@ -3,6 +3,7 @@ package app.service;
 import app.dto.Wallet;
 import app.exception.WalletException;
 
+@SuppressWarnings("SameReturnValue")
 public interface WalletService {
 
     Wallet registerWallet(Wallet newWallet) throws WalletException;

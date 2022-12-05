@@ -10,12 +10,12 @@ import org.junit.jupiter.api.TestMethodOrder;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class WalletDaoTestShould {
+class WalletDaoTest {
 
     public static final int VALID_ID = 3;
     public static final int INVALID_ID = 100;
-    private Wallet testNewWallet = new Wallet(VALID_ID, "Arun", 0.0, "root");
-    private WalletDao testWalletDao = new WalletDaoImpl();
+    private final Wallet testNewWallet = new Wallet(VALID_ID, "Arun", 0.0, "root");
+    private final WalletDao testWalletDao = new WalletDaoImpl();
     @Test
     @Order(1)
     public void returnWallet_When_walletAddedCorrectly() throws WalletDaoException {

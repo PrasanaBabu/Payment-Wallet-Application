@@ -19,7 +19,7 @@ class WalletServiceTestShould {
     private static Double expectedBalanceOfGivenId = 10.0;
     private final Double VALID_TRANSFER_AMOUNT = 10.0;
     private final Double INVALID_WITHDRAW_AMOUNT = 100000.0;
-    private WalletService walletService = new WalletServiceImpl();
+    private final WalletService walletService = new WalletServiceImpl();
 
     @Test
     @Order(1)
