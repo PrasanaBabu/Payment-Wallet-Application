@@ -8,6 +8,7 @@ import app.service.WalletServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin()
 public class ControllerRest {
 
     final WalletService walletService = new WalletServiceImpl();
@@ -33,19 +34,22 @@ public class ControllerRest {
 
         return loginSuccess? "Login Passed" : "Login Failed. Incorrect ID/ Password";
     }
-    @PatchMapping("/wallet/add")
+    @PatchMapping("wallet/add")
     public String addAmount(@RequestBody WalletDto walletDto) throws WalletException {
+        System.out.println("cus id = " + walletDto.getCustomerId() + "amt = " + walletDto.getAmount());
         Double updatedBalance = walletService.addFundsToWallet(
                 walletDto.getCustomerId(),
                 walletDto.getAmount()
         );
 
+        System.out.println("added amount to " + walletDto.getCustomerId());
         return "Amount added successfully. New Balance = " + updatedBalance;
     }
 
-    @GetMapping("/wallet/check")
-    public Double balanceCheck(@RequestBody Integer walletId ) throws WalletException {
-        return walletService.showWalletBalance(walletId);
+    @GetMapping("/wallet/check/{id}")
+    public String balanceCheck(@PathVariable("id") Integer walletId ) throws WalletException {
+        System.out.println("Inside check");
+        return String.valueOf(walletService.showWalletBalance(walletId));
     }
 
     @PostMapping("wallet/transfer")

@@ -12,6 +12,8 @@ public class WalletControllerAdvice {
     @ExceptionHandler({WalletException.class})
     @ResponseStatus(code= HttpStatus.BAD_REQUEST)
     public String walletExceptionHandler(WalletException e){
+
+        System.err.println(e.getMessage());
         return e.getMessage();
     }
 }

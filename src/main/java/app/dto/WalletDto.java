@@ -2,9 +2,9 @@ package app.dto;
 
 public class WalletDto {
 
-    Integer customerId;
-    Integer receiverId;
-    Double amount;
+    private Integer customerId;
+    private Integer receiverId;
+    private Double amount;
 
     public WalletDto() {
 
