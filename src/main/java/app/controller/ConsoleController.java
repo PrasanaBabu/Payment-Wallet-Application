@@ -163,9 +163,8 @@ public class ConsoleController {
     }
 
     private static void withdrawFromWallet(WalletService walletService, Integer walletId) throws WalletException {
-        Boolean withdrawSuccessful = walletService.withdrawFundsFromWallet(walletId, getAmountToWithdrawThroughConsole());
-        if(withdrawSuccessful)
-            System.out.println("Current Balance = " + walletService.showWalletBalance(walletId));
+        Double newBalance = walletService.withdrawFundsFromWallet(walletId, getAmountToWithdrawThroughConsole());
+            System.out.println("Current Balance = " + newBalance);
     }
 
     private static Double getAmountToWithdrawThroughConsole() {

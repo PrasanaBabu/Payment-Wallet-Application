@@ -12,6 +12,6 @@ public interface WalletService {
     Double showWalletBalance(Integer walletId) throws WalletException;
     boolean fundTransfer(Integer fromId, Integer toId, Double amount) throws WalletException;
     Wallet unregisterWallet(Integer walletId, String password) throws WalletException;
-    Boolean withdrawFundsFromWallet(Integer walletId, Double amountToWithdraw) throws WalletException;
+    Double withdrawFundsFromWallet(Integer walletId, Double amountToWithdraw) throws WalletException;
 
 }

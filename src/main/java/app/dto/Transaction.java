@@ -1,21 +1,18 @@
 package app.dto;
 
-public class WalletDto {
+public class Transaction {
 
     private Integer customerId;
     private Integer receiverId;
     private Double amount;
 
-    public WalletDto() {
-
-    }
-
-    public WalletDto(Integer customerId, Double amount) {
+    public Transaction(Integer customerId, Double amount) {
         this.customerId = customerId;
         this.amount = amount;
+        this.receiverId = 0;
     }
 
-    public WalletDto(Integer customerId, Integer receiverId, Double amount) {
+    public Transaction(Integer customerId, Integer receiverId, Double amount) {
         this.customerId = customerId;
         this.receiverId = receiverId;
         this.amount = amount;

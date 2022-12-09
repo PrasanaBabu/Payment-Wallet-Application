@@ -42,11 +42,11 @@ public class WalletDaoImpl implements WalletDao {
 
             preparedStatement.executeUpdate();
             connection.close();
+            return newWallet;
 
         } catch (SQLException e) {
             throw new WalletDaoException("Sql Exception Occurred Redundant Id");
         }
-        return newWallet;
     }
     @Override
     public Wallet getWalletById(Integer walletId) throws WalletDaoException {
@@ -62,7 +62,10 @@ public class WalletDaoImpl implements WalletDao {
             String password = resultSet.getString("password");
 
             Wallet wallet = new Wallet(walletId, name, balance, password);
+
             connection.close();
+            resultSet.close();
+
             return wallet;
 
         } catch (SQLException e) {
@@ -82,6 +85,7 @@ public class WalletDaoImpl implements WalletDao {
 
             boolean rowUpdated = preparedStatement.executeUpdate() > 0;
             connection.close();
+
             if (!rowUpdated)
                 throw new WalletDaoException("At update, Invalid ID");
         } catch (Exception e) {

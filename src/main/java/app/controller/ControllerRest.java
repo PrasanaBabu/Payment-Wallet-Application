@@ -1,7 +1,7 @@
 package app.controller;
 
 import app.dto.Wallet;
-import app.dto.WalletDto;
+import app.dto.Transaction;
 import app.exception.WalletException;
 import app.service.WalletService;
 import app.service.WalletServiceImpl;
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin()
 public class ControllerRest {
 
-    final WalletService walletService = new WalletServiceImpl();
+    private final WalletService walletService = new WalletServiceImpl();
 
     @GetMapping("/")
     public String greeting(){
@@ -35,14 +35,14 @@ public class ControllerRest {
         return loginSuccess? "Login Passed" : "Login Failed. Incorrect ID/ Password";
     }
     @PatchMapping("wallet/add")
-    public String addAmount(@RequestBody WalletDto walletDto) throws WalletException {
-        System.out.println("cus id = " + walletDto.getCustomerId() + "amt = " + walletDto.getAmount());
+    public String addAmount(@RequestBody Transaction transaction) throws WalletException {
+        System.out.println("cus id = " + transaction.getCustomerId() + "amt = " + transaction.getAmount());
         Double updatedBalance = walletService.addFundsToWallet(
-                walletDto.getCustomerId(),
-                walletDto.getAmount()
+                transaction.getCustomerId(),
+                transaction.getAmount()
         );
 
-        System.out.println("added amount to " + walletDto.getCustomerId());
+        System.out.println("added amount to " + transaction.getCustomerId());
         return "Amount added successfully. New Balance = " + updatedBalance;
     }
 
@@ -53,11 +53,11 @@ public class ControllerRest {
     }
 
     @PostMapping("wallet/transfer")
-    public String transfer(@RequestBody WalletDto walletDto) throws WalletException {
+    public String transfer(@RequestBody Transaction transaction) throws WalletException {
         walletService.fundTransfer(
-                walletDto.getCustomerId(),
-                walletDto.getReceiverId(),
-                walletDto.getAmount()
+                transaction.getCustomerId(),
+                transaction.getReceiverId(),
+                transaction.getAmount()
         );
         return "Transfer Successful";
     }
@@ -71,8 +71,8 @@ public class ControllerRest {
     }
 
     @PatchMapping("wallet/withdraw")
-    public String withdrawFunds(@RequestBody WalletDto walletDto) throws WalletException {
-        walletService.withdrawFundsFromWallet(walletDto.getReceiverId(), walletDto.getAmount());
+    public String withdrawFunds(@RequestBody Transaction transaction) throws WalletException {
+        walletService.withdrawFundsFromWallet(transaction.getCustomerId(), transaction.getAmount());
         return "Successful";
     }
 

@@ -23,65 +23,69 @@ public class WalletServiceImpl implements WalletService {
         try {
             Wallet wallet;
             wallet = walletDao.getWalletById(walletId);
-            if (wallet != null && wallet.getPassword().equals(enteredPassword))
+            if (idPasswordMatch(enteredPassword, wallet)) {
                 return true;
+            }
         } catch (WalletDaoException e){
             throw new WalletException(e.getMessage());
         }
 
         return false;
     }
+
+    private static boolean idPasswordMatch(String enteredPassword, Wallet wallet) {
+        return wallet != null && wallet.getPassword().equals(enteredPassword);
+    }
+
     @Override
     public Double addFundsToWallet(Integer walletId, Double amountToAdd) throws WalletException {
-        Double newBalance;
         try {
-            if (amountToAdd < MINIMUM_AMOUNT_TO_ADD)
+            if (amountToAdd < MINIMUM_AMOUNT_TO_ADD) {
                 throw new WalletException("Amount to add must be greater than or equal to 1");
-            Wallet wallet;
-            wallet = walletDao.getWalletById(walletId);
-
-            newBalance = wallet.getBalance() + amountToAdd;
-            wallet.setBalance(newBalance);
-            walletDao.updateWallet(wallet);
+            }
+            return getNewBalanceAfterAdding(walletId, amountToAdd);
         } catch (WalletDaoException e) {
             throw new WalletException(e.getMessage());
         }
+    }
 
+    private Double getNewBalanceAfterAdding(Integer walletId, Double amountToAdd) throws WalletDaoException {
+        Double newBalance;
+        Wallet wallet;
+        wallet = walletDao.getWalletById(walletId);
+
+        newBalance = wallet.getBalance() + amountToAdd;
+        wallet.setBalance(newBalance);
+        walletDao.updateWallet(wallet);
         return newBalance;
     }
+
     @Override
     public Double showWalletBalance(Integer walletId) throws WalletException {
         Wallet wallet;
         try {
             wallet = walletDao.getWalletById(walletId);
+            return wallet.getBalance();
         } catch (WalletDaoException e){
             throw new WalletException(e.getMessage());
         }
-        return wallet.getBalance();
+
     }
     @Override
     public boolean fundTransfer(Integer fromId, Integer toId, Double amount) throws WalletException {
-        Wallet senderWallet;
-        if(amount < MINIMUM_AMOUNT_FOR_TRANSFER)
+
+        if(amount < MINIMUM_AMOUNT_FOR_TRANSFER) {
             throw new WalletException("Amount Low For Transfer");
-        try {
-            senderWallet = walletDao.getWalletById(fromId);
-        } catch (Exception e){
-            throw new WalletException("From Id Invalid");
         }
+        Wallet senderWallet = getSenderWallet(fromId);
+        Wallet receiverWallet = getReceiverWallet(toId);
 
-        Wallet receiverWallet;
+        transferGivenAmount(amount, senderWallet, receiverWallet);
+        return true;
+    }
 
-        try {
-            receiverWallet = walletDao.getWalletById(toId);
-        } catch (Exception e){
-            throw new WalletException("Receiver Id Invalid");
-        }
-
-        Double senderCurrentBalance = senderWallet.getBalance();
-        if (senderCurrentBalance < amount) {
-            throw new WalletException("Sender wallet Insufficient Balance");
-        }
+    private void transferGivenAmount(Double amount, Wallet senderWallet, Wallet receiverWallet) throws WalletException {
+        Double senderCurrentBalance = getSenderCurrentBalance(amount, senderWallet);
         Double senderFinalAmount = senderCurrentBalance - amount;
         Double receiverCurrentBalance = receiverWallet.getBalance();
         Double receiverFinalAmount = receiverCurrentBalance + amount;
@@ -95,34 +99,66 @@ public class WalletServiceImpl implements WalletService {
         } catch (WalletDaoException e){
             throw new WalletException(e.getMessage());
         }
-        return true;
     }
+
+    private static Double getSenderCurrentBalance(Double amount, Wallet senderWallet) throws WalletException {
+        Double senderCurrentBalance = senderWallet.getBalance();
+        if (senderCurrentBalance < amount) {
+            throw new WalletException("Sender wallet Insufficient Balance");
+        }
+        return senderCurrentBalance;
+    }
+
+    private Wallet getReceiverWallet(Integer toId) throws WalletException {
+        Wallet receiverWallet;
+
+        try {
+            receiverWallet = walletDao.getWalletById(toId);
+        } catch (Exception e){
+            throw new WalletException("Receiver Id Invalid");
+        }
+        return receiverWallet;
+    }
+
+    private Wallet getSenderWallet(Integer fromId) throws WalletException {
+        Wallet senderWallet;
+        try {
+            senderWallet = walletDao.getWalletById(fromId);
+        } catch (Exception e){
+            throw new WalletException("From Id Invalid");
+        }
+        return senderWallet;
+    }
+
     @Override
     public Wallet unregisterWallet(Integer walletId, String password) throws WalletException {
-        Wallet walletDeleted;
         try {
-            walletDeleted = walletDao.deleteWalletById(walletId);
+            return walletDao.deleteWalletById(walletId);
         } catch (WalletDaoException e) {
             throw new WalletException(e.getMessage());
         }
-
-        return walletDeleted;
     }
     @Override
-    public Boolean withdrawFundsFromWallet(Integer walletId, Double amountToWithdraw) throws WalletException {
-        Wallet wallet;
-        try{
-            wallet = walletDao.getWalletById(walletId);
+    public Double withdrawFundsFromWallet(Integer walletId, Double amountToWithdraw) throws WalletException {
 
-            if (amountToWithdraw > wallet.getBalance())
+        try{
+            Wallet wallet = walletDao.getWalletById(walletId);
+
+            if (amountToWithdraw > wallet.getBalance()){
                 throw new WalletException("Insufficient Balance");
-            Double newBalance = wallet.getBalance() - amountToWithdraw;
-            wallet.setBalance(newBalance);
-            walletDao.updateWallet(wallet);
+            }
+            else {
+                return newBalanceAfterWithdrawing(amountToWithdraw, wallet);
+            }
         } catch (WalletDaoException e){
             throw new WalletException(e.getMessage());
         }
+    }
 
-        return true;
+    private Double newBalanceAfterWithdrawing(Double amountToWithdraw, Wallet wallet) throws WalletDaoException {
+        Double newBalance = wallet.getBalance() - amountToWithdraw;
+        wallet.setBalance(newBalance);
+        walletDao.updateWallet(wallet);
+        return newBalance;
     }
 }
