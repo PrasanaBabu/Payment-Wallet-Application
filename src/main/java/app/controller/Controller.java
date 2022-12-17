@@ -46,13 +46,8 @@ public class Controller {
                                 System.out.println("Password Incorrect");
 
                     } catch (WalletException e) {
-                        if (e.getMessage().contains("At get"))
-                            System.out.println("No such id present in database");
-                        else if (e.getMessage().contains("Amount to add must be greater than or equal to 1"))
-                            System.out.println("Amount to add must be greater than or equal to 1");
-                        else
-                            e.printStackTrace();
-                        }
+                        handleExceptions(e);
+                    }
                     break;
 
                 case 3:
@@ -67,10 +62,7 @@ public class Controller {
                             else
                                 System.out.println("Password Incorrect");
                     } catch (WalletException e) {
-                        if(e.getMessage().contains("At get"))
-                            System.out.println("No such id present in database");
-                        else
-                            e.printStackTrace();
+                        handleExceptions(e);
                     }
                     break;
 
@@ -86,11 +78,9 @@ public class Controller {
                         } else
                             System.out.println("Wallet id / Password incorrect ");
                     } catch (WalletException e) {
-                        if (e.getMessage().contains("At get"))
-                            System.out.println("No such id is present in database");
-                        else
-                            e.printStackTrace();
-                        }
+                        handleExceptions(e);
+
+                    }
                     break;
 
                 case 5:
@@ -105,12 +95,8 @@ public class Controller {
                                 System.out.println("Password Incorrect");
 
                     } catch (WalletException e) {
-                        if (e.getMessage().contains("At get"))
-                            System.out.println("No such id present in database");
-                        else if (e.getMessage().contains("Insuf"))
-                            System.out.println("Insufficient Balance");
-                        else
-                            e.printStackTrace();
+                        handleExceptions(e);
+
                     }
                     break;
 
@@ -129,16 +115,8 @@ public class Controller {
                             System.out.println("Password Incorrect");
 
                     } catch (WalletException e) {
-                        if (e.getMessage().contains("From Id Invalid"))
-                            System.out.println("Sender Id Invalid");
-                        else if(e.getMessage().contains("Receiver Id Invalid"))
-                            System.out.println("Receiver Id Invalid");
-                        else if(e.getMessage().contains("Sender wallet Insufficient Balance"))
-                            System.out.println("Sender wallet Insufficient Balance");
-                        else if(e.getMessage().contains("Amount Low For Transfer"))
-                            System.out.println("Enter amount greater than minimum amount to transfer");
-                        else
-                            e.printStackTrace();
+                        handleExceptions(e);
+
                     }
                     break;
 
@@ -152,6 +130,24 @@ public class Controller {
         System.out.println();
         System.out.println("Thank you for using the application ❤❤");
         System.out.println("************************************************************************************************************");
+
+    }
+
+    private static void handleExceptions(WalletException e) {
+        if (e.getMessage().contains("At get"))
+            System.out.println("No such id present in database");
+        else if (e.getMessage().contains("Amount to add must be greater than or equal to 1"))
+            System.out.println("Amount to add must be greater than or equal to 1");
+        else if (e.getMessage().contains("From Id Invalid"))
+            System.out.println("Sender Id Invalid");
+        else if(e.getMessage().contains("Receiver Id Invalid"))
+            System.out.println("Receiver Id Invalid");
+        else if(e.getMessage().contains("Sender wallet Insufficient Balance"))
+            System.out.println("Sender wallet Insufficient Balance");
+        else if(e.getMessage().contains("Amount Low For Transfer"))
+            System.out.println("Enter amount greater than minimum amount to transfer");
+        else
+            e.printStackTrace();
 
     }
 
