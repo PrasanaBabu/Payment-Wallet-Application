@@ -2,6 +2,7 @@ package app.dto;
 
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class WalletTestShould {
@@ -11,31 +12,31 @@ class WalletTestShould {
     void returnCorrectWalletDetailsPassedThroughConstructor(){
         Wallet testWalletWithConstructorDetails =
                 new Wallet(2,"Arun", 10.0, "root");
-        assertTrue(testWalletWithConstructorDetails.getId() == 2);
-        assertTrue(testWalletWithConstructorDetails.getName().equals("Arun"));
-        assertTrue(testWalletWithConstructorDetails.getBalance() == 10.0);
-        assertTrue(testWalletWithConstructorDetails.getPassword().equals("root"));
+        assertEquals(2, (int) testWalletWithConstructorDetails.getId());
+        assertEquals("Arun", testWalletWithConstructorDetails.getName());
+        assertEquals(10.0, testWalletWithConstructorDetails.getBalance());
+        assertEquals("root", testWalletWithConstructorDetails.getPassword());
 
     }
     @Test
     void setAndReturnCorrectName(){
         testWallet.setName("phonepe");
-        assertTrue(testWallet.getName().equals("phonepe"));
+        assertEquals("phonepe", testWallet.getName());
     }
     @Test
     void setAndReturnCorrectId(){
         testWallet.setId(1);
-        assertTrue(testWallet.getId() == 1);
+        assertEquals(1, (int) testWallet.getId());
     }
     @Test
     void setAndReturnCorrectBalance(){
         testWallet.setBalance(10.0);
-        assertTrue(testWallet.getBalance() == 10.0);
+        assertEquals(10.0, testWallet.getBalance());
     }
     @Test
     void setAndReturnCorrectPassword(){
         testWallet.setPassword("root");
-        assertTrue(testWallet.getPassword().equals("root"));
+        assertEquals("root", testWallet.getPassword());
     }
 
 

@@ -37,7 +37,7 @@ class ConsoleControllerTest {
                 12, "root");
 
         Executable executable = () -> ConsoleController.callDeleteWalletWithUserInput(new WalletServiceImpl(),
-                12, "root");;
+                12, "root");
 
         // then
         WalletException thrown = assertThrows(WalletException.class, executable);

@@ -1,6 +1,8 @@
 package app.dto;
 
 import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
@@ -13,11 +15,11 @@ class TransactionTest {
         Transaction transactionWithConstructorAllValues =
                 new Transaction(1, 2, 10.0);
 
-        assertTrue(transactionWithConstructorAllValues.getCustomerId() == 1);
+        assertEquals(1, (int) transactionWithConstructorAllValues.getCustomerId());
 
-        assertTrue(transactionWithConstructorAllValues.getReceiverId() == 2);
+        assertEquals(2, (int) transactionWithConstructorAllValues.getReceiverId());
 
-        assertTrue(transactionWithConstructorAllValues.getAmount() == 10.0);
+        assertEquals(10.0, transactionWithConstructorAllValues.getAmount());
     }
 
     @Test
@@ -25,16 +27,16 @@ class TransactionTest {
         Transaction transactionWithConstructorAllValues =
                 new Transaction(1,10.0);
 
-        assertTrue(transactionWithConstructorAllValues.getCustomerId() == 1);
+        assertEquals(1, (int) transactionWithConstructorAllValues.getCustomerId());
 
-        assertTrue(transactionWithConstructorAllValues.getReceiverId() == 0);
+        assertEquals(0, (int) transactionWithConstructorAllValues.getReceiverId());
 
-        assertTrue(transactionWithConstructorAllValues.getAmount() == 10.0);
+        assertEquals(10.0, transactionWithConstructorAllValues.getAmount());
     }
 
     @Test
     void ReturnCorrectCustomerId(){
-        assertTrue(testTransaction.getCustomerId() == 1);
+        assertEquals(1, (int) testTransaction.getCustomerId());
     }
 
 }

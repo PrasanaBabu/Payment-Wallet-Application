@@ -2,9 +2,9 @@ package app.dto;
 
 public class Transaction {
 
-    private Integer customerId;
-    private Integer receiverId;
-    private Double amount;
+    private final Integer customerId;
+    private final Integer receiverId;
+    private final Double amount;
 
     public Transaction(Integer customerId, Double amount) {
         this.customerId = customerId;
