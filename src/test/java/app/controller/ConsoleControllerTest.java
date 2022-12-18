@@ -18,7 +18,7 @@ class ConsoleControllerTest {
         Double actual = ConsoleController.callShowBalanceWithUserInput
                 (new WalletServiceImpl(), 11);
 
-        assertEquals(1143.0, actual);
+        assertEquals(1113.0, actual);
     }
     @Test
     @Order(2)

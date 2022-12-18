@@ -7,7 +7,7 @@ import java.sql.*;
 
 public class WalletDaoImpl implements WalletDao {
 
-    private final String jdbcURL = "jdbc:mysql://localhost:3306/payment_wallet?useSSL=false";
+    private final String jdbcURL = "jdbc:mysql://localhost:3306/payment_wallet?allowPublicKeyRetrieval=true&useSSL=false";
     private final String jdbcUsername = "root";
     private final String jdbcPassword = "root";
     private final String jdbcDriver = "com.mysql.cj.jdbc.Driver";
